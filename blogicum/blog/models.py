@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+
 class Category(models.Model):
     title = models.CharField(
         verbose_name='Заголовок',
@@ -14,7 +15,8 @@ class Category(models.Model):
     slug = models.SlugField(
         unique=True,
         verbose_name='Идентификатор',
-        help_text='Идентификатор страницы для URL; разрешены символы латиницы, цифры, дефис и подчёркивание.',
+        help_text='Идентификатор страницы для URL; разрешены символы латиницы,'
+        ' цифры, дефис и подчёркивание.',
     )
     is_published = models.BooleanField(
         default=True,
@@ -25,7 +27,7 @@ class Category(models.Model):
         auto_now_add=True,
         verbose_name='Добавлено',
     )
-    
+
     class Meta:
         verbose_name = 'категория'
         verbose_name_plural = 'Категории'
@@ -61,7 +63,8 @@ class Post(models.Model):
     )
     pub_date = models.DateTimeField(
         verbose_name='Дата и время публикации',
-        help_text='Если установить дату и время в будущем — можно делать отложенные публикации.',
+        help_text='Если установить дату и время в будущем '
+        '— можно делать отложенные публикации.',
     )
     author = models.ForeignKey(
         User,
