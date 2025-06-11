@@ -2,17 +2,14 @@ from .models import Post, Category
 from django.views.generic import ListView, DetailView
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
+from .utils import get_published_posts
 
 
 # Create your views here.
 class PostListView(ListView):
     model = Post
     template_name = 'blog/post_list.html'
-    queryset = Post.objects.filter(
-        pub_date__lte=timezone.now(),
-        is_published=True,
-        category__is_published=True,
-    ).order_by('-created_at').select_related(
+    queryset = get_published_posts().order_by('-created_at').select_related(
         'author', 'location', 'category'
     )[:5]
 
@@ -28,8 +25,7 @@ class CategoryListView(ListView):
             slug=category_slug,
             is_published=True,
         )
-        return Post.objects.filter(
-            category=self.category,
+        return self.category.posts.filter(
             pub_date__lte=timezone.now(),
             is_published=True,
         )
